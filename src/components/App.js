@@ -75,57 +75,38 @@ export class App extends React.Component {
 
     return (
       <div>
-        <h1>Top commented</h1>
+        <h1>
+          Top commented from
+          <span className="logo">r/reactjs</span>
+        </h1>
         <div>
-          <p
-            style={{
-              fontSize: "24px",
-              color: "#FFA500",
-              margin: "15px",
-              display: "inline-block"
-            }}
-          >
-            Current comment filter: {minComments}
-          </p>
+          <p className="filter-title">Current comment filter: {minComments}</p>
           <button
+            className="refresh-btn"
             type="button"
-            style={{
-              margin: "15px",
-              padding: "10px",
-              display: "inline-block",
-              border: "none",
-              borderRadius: "15px",
-              backgroundColor: "#ccc"
-            }}
             onClick={this.handleAutoRefresh}
           >
             {autoRefreshEnabled ? "Stop" : "Start"} autorefresh
           </button>
         </div>
         <input
+          className="range-filter"
           type="range"
           value={minComments}
           onChange={this.handleFilterChange}
           min={0}
           max={maxAvailibleComments}
-          style={{ width: "50%", marginBottom: "20px" }}
         />
         {isLoading ? (
           <p>...Loading</p>
         ) : itemsByComments.length > 0 ? (
-          <div
-            style={{
-              display: "grid",
-              "grid-template-columns": "repeat(5, 220px)",
-              "grid-column-gap": "20px"
-            }}
-          >
+          <div className="content-grid">
             {itemsByComments.map(item => (
               <Item key={item.data.id} data={item.data} />
             ))}
           </div>
         ) : (
-          <p>No results found matching your criteria</p>
+          <p className="no-result">No results found matching your criteria</p>
         )}
       </div>
     );

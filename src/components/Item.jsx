@@ -4,13 +4,7 @@ import React, { memo } from "react";
 // memo for function
 
 export const Item = memo(({ data }) => (
-  <div
-    style={{
-      border: "1px solid black",
-      marginBottom: "10px",
-      padding: "10px"
-    }}
-  >
+  <div className="article-item">
     {data.thumbnail !== "self" && <img src={data.thumbnail} alt="" />}
     <p>{data.title}</p>
     <p>Number of comments: {data.num_comments}</p>

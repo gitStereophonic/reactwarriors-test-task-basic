@@ -1,0 +1,75 @@
+body {
+  margin: 15px;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+h1 {
+  color: darkorange;
+  font-weight: normal;
+}
+
+.logo {
+  background-image: url("https://styles.redditmedia.com/t5_2zldd/styles/communityIcon_12zd9qt7we121.jpg?format=pjpg&s=cd336438b484691291570595dcc68e78e799b085");
+  background-repeat: no-repeat;
+  background-size: contain;
+  padding-left: 36px;
+  font-weight: bold;
+}
+
+.filter-title {
+  font-size: 24px;
+  color: #FFA500;
+  display: inline-block;
+}
+
+.refresh-btn {
+  margin: 15px;
+  padding: 10px;
+  display: inline-block;
+  border: none;
+  border-radius: 15px;
+  background-color: rgb(240, 240, 240);
+  cursor: pointer;
+}
+
+.refresh-btn:hover {
+  animation: hover-btn 0.5s ease-in-out both;
+}
+
+@keyframes hover-btn {
+  to {
+    opacity: 0.7;
+    transform: scale(1.1);
+  }
+}
+
+.range-filter {
+  width: 50%;
+  margin-bottom: 20px;
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 220px);
+  grid-column-gap: 20px;
+}
+
+.article-item {
+  border: none;
+  margin-bottom: 10px;
+  padding: 10px;
+  text-align: center;
+  background-color: rgb(240, 240, 240);
+  border-radius: 10px;
+}
+
+.article-item:hover {
+  animation: hover-btn 0.5s ease-in-out both;
+}
+
+.no-result {
+  font-size: 24px;
+  font-weight: bold;
+  opacity: 0.5;
+}
