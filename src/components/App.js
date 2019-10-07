@@ -58,6 +58,11 @@ export class App extends React.Component {
     });
   };
 
+  getItemsByComments = (items, minComments) =>
+    items
+      .filter(item => item.data.num_comments > minComments)
+      .sort((a, b) => b.data.num_comments - a.data.num_comments);
+
   render() {
     const {
       items,
@@ -66,9 +71,7 @@ export class App extends React.Component {
       maxAvailibleComments,
       minComments
     } = this.state;
-    const itemsByComments = items
-      .filter(item => item.data.num_comments >= minComments)
-      .sort((a, b) => b.data.num_comments - a.data.num_comments);
+    const itemsByComments = this.getItemsByComments(items, minComments);
 
     return (
       <div>
@@ -105,11 +108,11 @@ export class App extends React.Component {
           onChange={this.handleFilterChange}
           min={0}
           max={maxAvailibleComments}
-          style={{ width: "100%", marginBottom: "20px" }}
+          style={{ width: "50%", marginBottom: "20px" }}
         />
         {isLoading ? (
           <p>...Loading</p>
-        ) : (
+        ) : itemsByComments.length > 0 ? (
           <div
             style={{
               display: "grid",
@@ -121,6 +124,8 @@ export class App extends React.Component {
               <Item key={item.data.id} data={item.data} />
             ))}
           </div>
+        ) : (
+          <p>No results found matching your criteria</p>
         )}
       </div>
     );
