@@ -8,7 +8,9 @@ export class App extends React.Component {
     this.state = {
       items: [],
       isLoading: false,
-      autoRefreshEnabled: false
+      autoRefreshEnabled: false,
+      maxAvailibleComments: 0,
+      minComments: 0
     };
   }
 
@@ -26,7 +28,11 @@ export class App extends React.Component {
       .then(({ data }) => {
         this.setState({
           items: data.children,
-          isLoading: false
+          isLoading: false,
+          maxAvailibleComments: Math.max(
+            ...data.children.map(o => o.data.num_comments),
+            0
+          )
         });
       });
   };
@@ -46,39 +52,72 @@ export class App extends React.Component {
     );
   };
 
+  handleFilterChange = event => {
+    this.setState({
+      minComments: Number(event.target.value)
+    });
+  };
+
   render() {
-    const { items, isLoading, autoRefreshEnabled } = this.state;
-    const itemsSortByComments = items.sort(
-      (a, b) => b.data.num_comments - a.data.num_comments
-    );
+    const {
+      items,
+      isLoading,
+      autoRefreshEnabled,
+      maxAvailibleComments,
+      minComments
+    } = this.state;
+    const itemsByComments = items
+      .filter(item => item.data.num_comments >= minComments)
+      .sort((a, b) => b.data.num_comments - a.data.num_comments);
+
     return (
       <div>
         <h1>Top commented</h1>
-        <button
-          type="button"
-          style={{
-            margin: "15px",
-            padding: "10px",
-            display: "block",
-            border: "none",
-            borderRadius: "15px",
-            backgroundColor: "#ccc"
-          }}
-          onClick={this.handleAutoRefresh}
-        >
-          {autoRefreshEnabled ? "Stop" : "Start"} autorefresh
-        </button>
+        <div>
+          <p
+            style={{
+              fontSize: "24px",
+              color: "#FFA500",
+              margin: "15px",
+              display: "inline-block"
+            }}
+          >
+            Current comment filter: {minComments}
+          </p>
+          <button
+            type="button"
+            style={{
+              margin: "15px",
+              padding: "10px",
+              display: "inline-block",
+              border: "none",
+              borderRadius: "15px",
+              backgroundColor: "#ccc"
+            }}
+            onClick={this.handleAutoRefresh}
+          >
+            {autoRefreshEnabled ? "Stop" : "Start"} autorefresh
+          </button>
+        </div>
+        <input
+          type="range"
+          value={minComments}
+          onChange={this.handleFilterChange}
+          min={0}
+          max={maxAvailibleComments}
+          style={{ width: "100%", marginBottom: "20px" }}
+        />
         {isLoading ? (
           <p>...Loading</p>
         ) : (
           <div
             style={{
-              display: "inline-grid",
+              display: "grid",
               "grid-template-columns": "repeat(5, 220px)",
               "grid-column-gap": "20px"
             }}
           >
-            {itemsSortByComments.map(item => (
+            {itemsByComments.map(item => (
               <Item key={item.data.id} data={item.data} />
             ))}
           </div>
